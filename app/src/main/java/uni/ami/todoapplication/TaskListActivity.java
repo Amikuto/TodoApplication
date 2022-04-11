@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     ListView tasksListView;
     ArrayAdapter<Task> mArrayAdapter;
     ArrayList<Task> mNameList;
+    TextView taskTypeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,15 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_task_list);
 
         tasksListView = findViewById(R.id.tasksListView);
+        taskTypeText = findViewById(R.id.taskTypeText);
         addNewTaskButton = findViewById(R.id.addNewTaskButton);
         addNewTaskButton.setOnClickListener(this);
+
         Intent i = getIntent();
         mNameList = (ArrayList<Task>) i.getSerializableExtra("TASKS_ARRAY_LIST");
+        String type = i.getSerializableExtra("TASK_TYPE").toString();
+        taskTypeText.setText(type);
+
         mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mNameList);
         tasksListView.setAdapter(mArrayAdapter);
     }

@@ -1,12 +1,24 @@
 package uni.ami.todoapplication;
 
-public enum TaskType {
+import java.io.Serializable;
+
+public enum TaskType implements Serializable {
     PERSONAL("Личные"),
-    EDU("Учебна"),
+    EDU("Учеба"),
     WORK("Работа"),
     RECREATION("Отдых");
+    private final String description;
 
-    TaskType(String s) {
+    TaskType(String description) {
+        this.description = description;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return description;
     }
 }

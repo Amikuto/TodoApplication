@@ -9,12 +9,17 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button personalButton, eduButton, workButton, restButton;
+    Button personalButton, eduButton, workButton, recrButton;
     ArrayList<Task> mNameList = new ArrayList<>(Arrays.asList(
-            new Task(1L, "Title1", "Desc1", TaskType.PERSONAL)
+            new Task(1L, "Title1", "Desc1", TaskType.PERSONAL),
+            new Task(1L, "Title1", "Desc1", TaskType.PERSONAL),
+            new Task(1L, "Title1", "Desc1", TaskType.EDU),
+            new Task(1L, "Title1", "Desc1", TaskType.WORK),
+            new Task(1L, "Title1", "Desc1", TaskType.RECREATION)
     ));
 
     @Override
@@ -24,17 +29,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.personalButton).setOnClickListener(this);
         eduButton = findViewById(R.id.eduButton);
+        eduButton.setOnClickListener(this);
         workButton = findViewById(R.id.workButton);
-        restButton = findViewById(R.id.restButton);
+        workButton.setOnClickListener(this);
+        recrButton = findViewById(R.id.recrButton);
+        recrButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-
-//        case (vi)
         Intent intent = new Intent(this, TaskListActivity.class);
-        intent.putExtra("TASKS_ARRAY_LIST", mNameList);
-        intent.putExtra("TASK_TYPE", TaskType.PERSONAL);
+        TaskType type = TaskType.PERSONAL;
+        switch (view.getId()) {
+            case R.id.personalButton:
+                type = TaskType.PERSONAL;
+                break;
+            case R.id.eduButton:
+                type = TaskType.EDU;
+                break;
+            case R.id.workButton:
+                type = TaskType.WORK;
+                break;
+            case R.id.recrButton:
+                type = TaskType.RECREATION;
+                break;
+        }
+        intent.putExtra("TASK_TYPE", type);
+        final TaskType finalType = type;
+        ArrayList<Task> dtoList = (ArrayList<Task>) mNameList
+                .stream().filter(task -> task.getType() == finalType)
+                .collect(Collectors.toList());
+        intent.putExtra(
+                "TASKS_ARRAY_LIST", dtoList
+        );
         startActivity(intent);
     }
 }
