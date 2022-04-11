@@ -52,10 +52,8 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Заголовок: " + title + '\'' +
+                "Описание: " + description + '\'';
     }
 
 //    @Override

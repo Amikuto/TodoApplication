@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     ArrayAdapter<Task> mArrayAdapter;
     ArrayList<Task> mNameList;
     TextView taskTypeText;
+    TaskType taskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +44,34 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
         Intent i = getIntent();
         mNameList = (ArrayList<Task>) i.getSerializableExtra("TASKS_ARRAY_LIST");
-        String type = i.getSerializableExtra("TASK_TYPE").toString();
-        taskTypeText.setText(type);
+        taskType = (TaskType) i.getSerializableExtra("TASK_TYPE");
+        taskTypeText.setText(taskType.toString());
 
-        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mNameList);
+        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, mNameList);
         tasksListView.setAdapter(mArrayAdapter);
+        tasksListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        tasksListView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> parent,
+                                            View view, int position,
+                                            long id) {
+                        //TODO: доделать клик листенер!
+//                        String choosen = "";
+//                        SparseBooleanArray checked;
+//                        checked = parent.getCheckedItemPositions();
+//                        for (int i = 0; i < checked.size(); i++) {
+//                            if (checked.valueAt(i)) {
+//                                choosen += data[checked.keyAt(i)]
+//                                        + " ";
+//                            }
+//                        }
+//                        Toast.makeText(getApplicationContext(),
+//                                "выбраны : " + choosen,
+//                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
@@ -64,12 +91,20 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
         Button addTaskOkButton = popupView.findViewById(R.id.addTaskOkButton);
         Button addTaskCancelButton = popupView.findViewById(R.id.addTaskCancelButton);
+        TextView taskTitle = popupView.findViewById(R.id.taskTitle);
+        TextView taskDescription = popupView.findViewById(R.id.taskDescription);
+
 
         addTaskOkButton.setOnClickListener(e -> {
             Date dNow = new Date();
             SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
             String datetime = ft.format(dNow);
-            Task newTask = new Task(Long.parseLong(datetime), "123", "123", TaskType.PERSONAL);
+            Task newTask = new Task(
+                    Long.parseLong(datetime),
+                    taskTitle.getText().toString(),
+                    taskDescription.getText().toString(),
+                    taskType
+            );
             mNameList.add(newTask);
             mArrayAdapter.notifyDataSetChanged();
         });
