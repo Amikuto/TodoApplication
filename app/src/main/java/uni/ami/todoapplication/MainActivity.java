@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button personalButton, eduButton, workButton, restButton;
     ArrayList<Task> mNameList = new ArrayList<>(Arrays.asList(
-            new Task(1L, "Title1", "Desc1")
+            new Task(1L, "Title1", "Desc1", TaskType.PERSONAL)
     ));
 
     @Override
@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
+//        case (vi)
         Intent intent = new Intent(this, TaskListActivity.class);
         intent.putExtra("TASKS_ARRAY_LIST", mNameList);
+        intent.putExtra("TASK_TYPE", TaskType.PERSONAL);
         startActivity(intent);
     }
 }

@@ -62,7 +62,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             Date dNow = new Date();
             SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
             String datetime = ft.format(dNow);
-            Task newTask = new Task(Long.parseLong(datetime), "123", "123");
+            Task newTask = new Task(Long.parseLong(datetime), "123", "123", TaskType.PERSONAL);
             mNameList.add(newTask);
             mArrayAdapter.notifyDataSetChanged();
         });

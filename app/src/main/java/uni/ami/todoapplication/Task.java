@@ -9,11 +9,13 @@ public class Task implements Serializable {
     private Long id;
     private String title;
     private String description;
+    private TaskType type;
 
-    public Task(Long id, String title, String description) {
+    public Task(Long id, String title, String description, TaskType type) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.type = type;
     }
 
     public Long getId() {
@@ -38,6 +40,14 @@ public class Task implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
     }
 
     @Override
