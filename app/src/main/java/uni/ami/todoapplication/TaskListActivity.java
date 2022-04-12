@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.SparseBooleanArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,13 +19,14 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class TaskListActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button addNewTaskButton;
     ListView tasksListView;
-    ArrayAdapter<Task> mArrayAdapter;
-    ArrayList<Task> mNameList;
+    ArrayAdapter<Task> mainArrayAdapter;
+    ArrayList<Task> tasksList;
     TextView taskTypeText;
     TaskType taskType;
 
@@ -43,12 +41,13 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         addNewTaskButton.setOnClickListener(this);
 
         Intent i = getIntent();
-        mNameList = (ArrayList<Task>) i.getSerializableExtra("TASKS_ARRAY_LIST");
         taskType = (TaskType) i.getSerializableExtra("TASK_TYPE");
+        tasksList = (ArrayList<Task>) MainActivity.todoList.stream().filter(task -> task.getType() == taskType).collect(Collectors.toList());
+//        mNameList = (ArrayList<Task>) i.getSerializableExtra("TASKS_ARRAY_LIST");
         taskTypeText.setText(taskType.toString());
 
-        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, mNameList);
-        tasksListView.setAdapter(mArrayAdapter);
+        mainArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, tasksList);
+        tasksListView.setAdapter(mainArrayAdapter);
         tasksListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         tasksListView.setOnItemClickListener(
@@ -67,9 +66,9 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 //                                        + " ";
 //                            }
 //                        }
-//                        Toast.makeText(getApplicationContext(),
-//                                "выбраны : " + choosen,
-//                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                "выбраны : LOL",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -105,8 +104,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                     taskDescription.getText().toString(),
                     taskType
             );
-            mNameList.add(newTask);
-            mArrayAdapter.notifyDataSetChanged();
+            addTask(newTask);
+            mainArrayAdapter.notifyDataSetChanged();
         });
 
         addTaskCancelButton.setOnClickListener(e -> popupWindow.dismiss());
@@ -120,5 +119,11 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+    }
+
+
+    private void addTask(Task newTask) {
+        MainActivity.todoList.add(newTask);
+        mainArrayAdapter.add(newTask);
     }
 }

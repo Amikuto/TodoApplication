@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button personalButton, eduButton, workButton, recrButton;
-    ArrayList<Task> mNameList = new ArrayList<>(Arrays.asList(
+    public static ArrayList<Task> todoList = new ArrayList<>(Arrays.asList(
             new Task(1L, "Title1", "Desc1", TaskType.PERSONAL),
             new Task(1L, "Title1", "Desc1", TaskType.PERSONAL),
             new Task(1L, "Title1", "Desc1", TaskType.EDU),
@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         intent.putExtra("TASK_TYPE", type);
         final TaskType finalType = type;
-        ArrayList<Task> dtoList = (ArrayList<Task>) mNameList
-                .stream().filter(task -> task.getType() == finalType)
-                .collect(Collectors.toList());
+//        ArrayList<Task> dtoList = (ArrayList<Task>) todoList
+//                .stream().filter(task -> task.getType() == finalType)
+//                .collect(Collectors.toList());
         intent.putExtra(
-                "TASKS_ARRAY_LIST", dtoList
+                "TASKS_ARRAY_LIST", todoList
         );
         startActivity(intent);
     }
