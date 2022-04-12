@@ -2,6 +2,7 @@ package uni.ami.todoapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recrButton.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(this, TaskListActivity.class);
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         intent.putExtra("TASK_TYPE", type);
-        final TaskType finalType = type;
+//        final TaskType finalType = type;
 //        ArrayList<Task> dtoList = (ArrayList<Task>) todoList
 //                .stream().filter(task -> task.getType() == finalType)
 //                .collect(Collectors.toList());

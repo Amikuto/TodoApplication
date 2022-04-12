@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,31 +47,24 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 //        mNameList = (ArrayList<Task>) i.getSerializableExtra("TASKS_ARRAY_LIST");
         taskTypeText.setText(taskType.toString());
 
-        mainArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, tasksList);
+        mainArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasksList);
         tasksListView.setAdapter(mainArrayAdapter);
         tasksListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         tasksListView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener(){
-                    @Override
-                    public void onItemClick(AdapterView<?> parent,
-                                            View view, int position,
-                                            long id) {
-                        //TODO: доделать клик листенер!
-//                        String choosen = "";
-//                        SparseBooleanArray checked;
-//                        checked = parent.getCheckedItemPositions();
-//                        for (int i = 0; i < checked.size(); i++) {
-//                            if (checked.valueAt(i)) {
-//                                choosen += data[checked.keyAt(i)]
-//                                        + " ";
-//                            }
-//                        }
-                        Toast.makeText(getApplicationContext(),
-                                "выбраны : LOL",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                (parent, view, position, id) -> {
+                }
+        );
+        tasksListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Дело удалено!",
+                    Toast.LENGTH_SHORT
+            ).show();
+            removeTask(position);
+            mainArrayAdapter.notifyDataSetChanged();
+            return true;
+        });
     }
 
     @Override
@@ -125,5 +119,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     private void addTask(Task newTask) {
         MainActivity.todoList.add(newTask);
         mainArrayAdapter.add(newTask);
+    }
+
+    private void removeTask(int position) {
+        MainActivity.todoList.remove(position);
+        tasksList.remove(position);
     }
 }

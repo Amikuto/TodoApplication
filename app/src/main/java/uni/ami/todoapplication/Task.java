@@ -3,6 +3,8 @@ package uni.ami.todoapplication;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Task implements Serializable {
@@ -50,10 +52,10 @@ public class Task implements Serializable {
         this.type = type;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "Заголовок: " + title + '\'' +
-                "Описание: " + description + '\'';
+        return "Заголовок: " + title + "\tОписание: " + description;
     }
 
 //    @Override
