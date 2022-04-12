@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +53,18 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         tasksListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         tasksListView.setOnItemClickListener(
-                (parent, view, position, id) -> {
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        LayoutInflater addTaskPopupInflater = (LayoutInflater) TaskListActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View addTaskPopupView = addTaskPopupInflater.inflate(R.layout.view_task_popout, null);
+                        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        boolean focusable = true; // lets taps outside the popup also dismiss it
+                        final PopupWindow addTaskPopupWindow = new PopupWindow(addTaskPopupView, width, height, focusable);
+                        addTaskPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                    }
                 }
         );
         tasksListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
